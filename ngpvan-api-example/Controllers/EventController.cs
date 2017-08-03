@@ -7,29 +7,9 @@ namespace ngpvanapi.Controllers
 {
     public class EventController : Controller
     {
-        private string UrlFormat
-        {
-            get { return System.Configuration.ConfigurationManager.AppSettings["VANAPI_UrlFormat"]; }
-        }
-
-        private string Username
-        {
-            get { return System.Configuration.ConfigurationManager.AppSettings["VANAPI_Username"]; }
-        }
-
-        private string Password
-        {
-            get
-            {
-                var pwd = System.Configuration.ConfigurationManager.AppSettings["VANAPI_Password"];
-                var dbMode = System.Configuration.ConfigurationManager.AppSettings["VANAPI_DBMode"];
-                return string.Format("{0}|{1}", pwd, dbMode);
-            }
-        }
-
         public ActionResult Index()
         {
-            var result = Helper.Get(string.Format(UrlFormat, "events"), Username, Password);
+            var result = Helper.Get("events");
             if (result.Code() == HttpStatusCode.OK)
             {
                 var list = JsonConvert.DeserializeObject<EventList>(result.Body());
@@ -42,7 +22,7 @@ namespace ngpvanapi.Controllers
 
         public ActionResult Detail(int eventId)
         {
-            var result = Helper.Get(string.Format(UrlFormat, "events/" + eventId), Username, Password);
+            var result = Helper.Get("events/" + eventId);
             if (result.Code() == HttpStatusCode.OK)
             {
                 var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());

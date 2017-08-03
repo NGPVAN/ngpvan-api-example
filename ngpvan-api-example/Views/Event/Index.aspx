@@ -10,32 +10,35 @@
         <legend>List of Events</legend> 
         <table>
             <tr>
-                <th>Event Id</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Start Date</th>
-                <th>End Date</th>
+                <th><%= Html.Label("Event Id", new { @class="editor-label"}) %></th>
+                <th><%= Html.Label("Name", new { @class="editor-label"}) %></th>
+                <th><%= Html.Label("Description", new { @class="editor-label"}) %></th>
+                <th><%= Html.Label("Start date", new { @class="editor-label"}) %></th>
+                <th><%= Html.Label("End date", new { @class="editor-label"}) %></th>
             </tr> 
         <% foreach (var item in Model) { %>
             <tr>
                 <td>
-                    <%: Html.ActionLink(item.EventId.ToString(), "Detail", new { eventId=item.EventId }) %>
+                    <%: Html.ActionLink(item.EventId.ToString(), "Detail", new { eventId=item.EventId }, new { @class="editor-field"}) %>
                 </td>
                 <td>
-                    <%= Html.Label(item.Name) %>
+                    <%= Html.Label("name", item.Name, new { @class="editor-field"}) %>
                 </td>
                 <td>
-                    <%= Html.Label(item.Description ?? "") %>
+                    <%= Html.Label("description", item.Description ?? "", new { @class="editor-field"}) %>
                 </td>
                 <td>
-                    <%= Html.Label(item.StartDate.ToString()) %>
+                    <%= Html.Label("startDateUtc", item.StartDateUtc.ToLocalTime().ToString(), new { @class="editor-field"}) %>
                 </td>
                 <td>
-                    <%= Html.Label(item.EndDate.ToString()) %>
+                    <%= Html.Label("endDateUtc", item.EndDateUtc.ToLocalTime().ToString(), new { @class="editor-field"}) %>
                 </td>
             </tr>
         <% } %>
         </table>
     </fieldset>
+    <p>
+        <%: Html.ActionLink("Home", "Index", "Home") %>
+    </p>
 </body>
 </html>

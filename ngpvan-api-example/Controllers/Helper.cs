@@ -29,16 +29,45 @@ namespace ngpvanapi.Controllers
 
     public class Helper
     {
-        public static ReturnObject Get(string url, string username, string password)
+        private static string UrlFormat
         {
-            var request = CreateRequest(url, "GET", username, password);
+            get { return System.Configuration.ConfigurationManager.AppSettings["VANAPI_UrlFormat"]; }
+        }
+
+        private static string Username
+        {
+            get { return System.Configuration.ConfigurationManager.AppSettings["VANAPI_Username"]; }
+        }
+
+        private static string Password
+        {
+            get
+            {
+                var pwd = System.Configuration.ConfigurationManager.AppSettings["VANAPI_Password"];
+                var dbMode = System.Configuration.ConfigurationManager.AppSettings["VANAPI_DBMode"];
+                return string.Format("{0}|{1}", pwd, dbMode);
+            }
+        }
+
+        public static ReturnObject Get(string action)
+        {
+            var url = string.Format(UrlFormat, action);
+            var request = CreateRequest(url, "GET", Username, Password);
             return ExecuteGetRequest(request);
         }
 
-        public static ReturnObject Post(string url, string username, string password, string serializedData)
+        public static ReturnObject Post(string action, string serializedData)
         {
-            var request = CreateRequest(url, "POST", username, password);
+            var url = string.Format(UrlFormat, action);
+            var request = CreateRequest(url, "POST", Username, Password);
             return ExecutePostRequest(request, serializedData);
+        }
+
+        public static ReturnObject PostWithRedirect(string action, string serializedData)
+        {
+            var url = string.Format(UrlFormat, action);
+            var request = CreateRequest(url, "POST", Username, Password);
+            return ExecutePostRequestWithRedirect(request, serializedData);
         }
 
         internal static WebRequest CreateRequest(string url, string method, string username, string password)
@@ -106,6 +135,49 @@ namespace ngpvanapi.Controllers
                 if (webException.Response != null)
                 {
                     var resp = (HttpWebResponse) webException.Response;
+                    responseCode = resp.StatusCode;
+                    responseBody = ReadStream(resp.GetResponseStream());
+                    return new ReturnObject(responseCode, responseBody);
+                }
+                throw;
+            }
+        }
+
+        private static ReturnObject ExecutePostRequestWithRedirect(WebRequest webRequest, string serializedData)
+        {
+            HttpStatusCode responseCode;
+            string responseBody;
+            try
+            {
+                using (var streamWriter = new StreamWriter(webRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(serializedData);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                    using (var response = webRequest.GetResponse() as HttpWebResponse)
+                    {
+                        responseCode = response.StatusCode;
+                        responseBody = ReadStream(response.GetResponseStream());
+                        return new ReturnObject(responseCode, responseBody);
+                    }
+                }
+            }
+            catch (WebException webException)
+            {
+                if (webException.Response != null)
+                {
+                    var resp = (HttpWebResponse) webException.Response;
+                    if (resp.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        //Follow the redirect
+                        var redirectResponse = resp.ResponseUri;
+                        if (redirectResponse != webRequest.RequestUri)
+                        {
+                            var redirectRequest = CreateRequest(redirectResponse.AbsoluteUri, "GET", Username, Password);
+                            return ExecuteGetRequest(redirectRequest);
+                        }
+                    }
+
                     responseCode = resp.StatusCode;
                     responseBody = ReadStream(resp.GetResponseStream());
                     return new ReturnObject(responseCode, responseBody);
