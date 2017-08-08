@@ -1,0 +1,145 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Coding as activism",
+		"_postman_id": "87a844c3-c672-52f7-2293-779aa65ebc8f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hello world",
+			"request": {
+				"url": "https://api.securevan.com/v4/echoes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic Y29kaW5nQXNBY3RpdmlzbTpGMUJDMTZFMy1BQTI3LTQ1QzItOUUyQy1BQzA0NDQ0QzFFNjd8MQ==",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"message\": \"Hello, world!\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create a volunteer record",
+			"request": {
+				"url": "https://api.securevan.com/v4/people/findOrCreate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic Y29kaW5nQXNBY3RpdmlzbTpGMUJDMTZFMy1BQTI3LTQ1QzItOUUyQy1BQzA0NDQ0QzFFNjd8MQ==",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Doe\",\n    \"emails\": [\n        {\n            \"email\": \"jdoe@fake.ngpvan.com\"\n        }\n    ]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get event details",
+			"request": {
+				"url": {
+					"raw": "https://api.securevan.com/v4/events/4306?$expand=roles,shifts,locations",
+					"protocol": "https",
+					"host": [
+						"api",
+						"securevan",
+						"com"
+					],
+					"path": [
+						"v4",
+						"events",
+						"4306"
+					],
+					"query": [
+						{
+							"key": "$expand",
+							"value": "roles,shifts,locations",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic Y29kaW5nQXNBY3RpdmlzbTpGMUJDMTZFMy1BQTI3LTQ1QzItOUUyQy1BQzA0NDQ0QzFFNjd8MQ==",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "RSVP to an event",
+			"request": {
+				"url": "https://api.securevan.com/v4/signups",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic Y29kaW5nQXNBY3RpdmlzbTpGMUJDMTZFMy1BQTI3LTQ1QzItOUUyQy1BQzA0NDQ0QzFFNjd8MQ==",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"person\": {\n        \"vanId\": 100879417\n    },\n    \"event\": {\n        \"eventId\": 4306\n    },\n    \"location\": {\n        \"locationId\": 333\n    },\n    \"role\": {\n        \"roleId\": 198334\n    },\n    \"shift\": {\n        \"eventShiftId\": 5961\n    },\n    \"status\": {\n        \"statusId\": 1\n    }\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Collect canvass data",
+			"request": {
+				"url": "https://api.securevan.com/v4/people/100879417/canvassResponses",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic Y29kaW5nQXNBY3RpdmlzbTpGMUJDMTZFMy1BQTI3LTQ1QzItOUUyQy1BQzA0NDQ0QzFFNjd8MQ==",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"canvassContext\": {\n        \"contactTypeId\": 8,\n        \"dateCanvassed\": \"2017-08-08\",\n        \"inputTypeId\": 11\n    },\n    \"responses\": [\n        {\n            \"action\": \"Apply\",\n            \"activistCodeId\": 4369730,\n            \"type\": \"ActivistCode\"\n        },\n        {\n            \"surveyQuestionId\": 259400,\n            \"surveyResponseId\": 1085255,\n            \"type\": \"SurveyResponse\"\n        }\n    ]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
