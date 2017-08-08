@@ -31,6 +31,11 @@ textarea {
     margin: 1em 0 0 0;
 }
 
+.editor-label-subheader {
+    margin: 1em 0 0 0;
+    font-weight: bold;
+}
+
 .editor-field {
     margin: 0.5em 0 0 0;
 }

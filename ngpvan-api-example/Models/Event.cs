@@ -16,10 +16,10 @@ namespace ngpvanapi.Models
         public string NextPageLink;
 
         [JsonProperty("top")]
-        public int Top;
+        public int? Top;
 
         [JsonProperty("skip")]
-        public int Skip;
+        public int? Skip;
     }
     
     public class Event

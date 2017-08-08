@@ -19,20 +19,46 @@ namespace ngpvanapi.Controllers
         public ActionResult CanvassResponse(int vanId)
         {
             var view = new CanvassResponseView {VanId = vanId};
+            
+            var defaultSelectListItem = new SelectListItem {Value = "0", Text = string.Empty, Selected = true};
+
             var inputTypes = Helper.Get(string.Format("{0}/{1}", Action, "inputTypes"));
-            if (inputTypes.Code() == HttpStatusCode.OK)
+            if (inputTypes.Code() != HttpStatusCode.OK)
             {
-                var list = JsonConvert.DeserializeObject<List<Models.InputType>>(inputTypes.Body());
-                var inputTypesList =
-                    list.Select(e => new SelectListItem() {Value = e.InputTypeId.ToString(), Text = e.Name}).ToList();
-                var defaultInputType = new SelectListItem() {Value = "0", Text = string.Empty, Selected = true};
-                inputTypesList.Insert(0, defaultInputType);
-                view.InputTypes = inputTypesList;
-                return View(view);
+                var errors = JsonConvert.DeserializeObject<Errors>(inputTypes.Body());
+                return View("Error", errors);
             }
 
-            var errors = JsonConvert.DeserializeObject<Errors>(inputTypes.Body());
-            return View("Error", errors);
+            var it = JsonConvert.DeserializeObject<List<Models.InputType>>(inputTypes.Body());
+            var inputTypesList =
+                it.Select(e => new SelectListItem {Value = e.InputTypeId.ToString(), Text = e.Name}).ToList();
+            inputTypesList.Insert(0, defaultSelectListItem);
+            view.InputTypes = inputTypesList;
+
+            var activistCodes = Helper.Get(string.Format("{0}", "activistCodes"));
+            if (activistCodes.Code() != HttpStatusCode.OK)
+            {
+                var errors = JsonConvert.DeserializeObject<Errors>(activistCodes.Body());
+                return View("Error", errors);
+            }
+
+            var ac = JsonConvert.DeserializeObject<ActivistCodeList>(activistCodes.Body());
+            var activistCodesList =
+                ac.Items.Select(e => new SelectListItem {Value = e.ActivistCodeId.ToString(), Text = e.Name}).ToList();
+            activistCodesList.Insert(0, defaultSelectListItem);
+            view.ActivistCodes = activistCodesList;
+
+            var surveyQuestions = Helper.Get(string.Format("{0}", "surveyQuestions"));
+            if (surveyQuestions.Code() != HttpStatusCode.OK)
+            {
+                var errors = JsonConvert.DeserializeObject<Errors>(surveyQuestions.Body());
+                return View("Error", errors);
+            }
+
+            var surveyQuestionsList = JsonConvert.DeserializeObject<SurveyQuestionList>(surveyQuestions.Body());
+            view.SurveyQuestions = surveyQuestionsList;
+
+            return View(view);
         }
 
         public ActionResult GetContactTypesByInputTypeId(int inputTypeId)

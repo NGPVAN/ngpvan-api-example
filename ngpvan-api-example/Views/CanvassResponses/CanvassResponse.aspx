@@ -16,13 +16,34 @@
             <legend>Canvass Response</legend>
     
             <p>
-                <%= Html.Label("VAN Id", new { @class="editor-label"}) %> <%= Html.TextBox("vanId", Model.VanId, new {@class = "editor-field", @readonly = "readonly"}) %> <br/>  
-
+                <%= Html.Label("VANID", new { @class="editor-label-subheader"}) %><br/>
+                <%= Html.TextBox("vanId", Model.VanId, new {@class = "editor-field", @readonly = "readonly"}) %> <br/>  
+            </p>
+            
+            <p>
                 <%= Html.Label("Input type", new { @class="editor-label"}) %> <%= Html.DropDownList("inputTypeId", Model.InputTypes, new {@class = "editor-field"}) %> <br/>
                 
                 <%= Html.Label("Contact type", new { @class="editor-label"}) %> <%= Html.DropDownList("contactTypeId", new List<SelectListItem>(), new {@class = "editor-field"}) %> <br/>
                 
                 <%= Html.Label("Result code", new { @class="editor-label"}) %> <%= Html.DropDownList("resultCodeId", new List<SelectListItem>(), new {@class = "editor-field"}) %> <br/>
+            </p>
+            
+            <p>
+                <%= Html.Label("Activist code", new { @class="editor-label-subheader"}) %><br/>
+                <%= Html.DropDownList("activistCodeId", Model.ActivistCodes, new {@class = "editor-field"}) %> <br/>
+            </p>
+
+            <p>
+                <% if (Model.SurveyQuestions != null && Model.SurveyQuestions.Items.Count > 0)
+                   { %>
+                    <%= Html.Label("Survey question", new { @class="editor-label-subheader"}) %><br/>
+                    <%    var surveyQuestion = Model.SurveyQuestions.Items[0];
+                    %>
+                        <%= Html.Hidden("surveyQuestionId", surveyQuestion.SurveyQuestionId, new {@class = "editor-field", @readonly = "readonly"}) %>
+                        <%= Html.Label(surveyQuestion.ScriptQuestion, new { @class="editor-label"}) %><br/>
+                        <%= Html.DropDownList("surveyResponseId", new List<SelectListItem>(surveyQuestion.SurveyResponses.Select(x => new SelectListItem() {Value = x.SurveyResponseId.ToString(), Text = x.Name} )) ) %>
+                    <%
+                    } %>
             </p>
             
             <input type="submit" value="Post" />

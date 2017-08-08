@@ -48,7 +48,7 @@ namespace ngpvanapi.Controllers
 
         public ActionResult Detail(int eventId)
         {
-            var result = Helper.Get(string.Format("{0}/{1}?$expand=locations,roles,shifts", Action, eventId));
+            var result = Helper.Get(string.Format("{0}/{1}?$expand=shifts,roles,locations", Action, eventId));
             if (result.Code() == HttpStatusCode.OK)
             {
                 var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());
@@ -64,7 +64,7 @@ namespace ngpvanapi.Controllers
             if (eventId == 0)
                 return null;
 
-            var result = Helper.Get(string.Format("{0}/{1}?$expand=locations,roles,shifts", Action, eventId));
+            var result = Helper.Get(string.Format("{0}/{1}?$expand=shifts,roles,locations", Action, eventId));
             if (result.Code() == HttpStatusCode.OK)
             {
                 var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());

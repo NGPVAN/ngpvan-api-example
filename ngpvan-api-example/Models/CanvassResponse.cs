@@ -7,11 +7,14 @@ namespace ngpvanapi.Models
 {
     public class CanvassResponse
     {
+        [JsonProperty("canvassContext")]
+        public CanvassContext Context;
+
         [JsonProperty("resultCodeId")]
         public int? ResultCodeId;
 
-        [JsonProperty("canvassContext")]
-        public CanvassContext Context;
+        [JsonProperty("responses")]
+        public ScriptResponse Responses;
     }
 
     public class CanvassContext
@@ -29,9 +32,14 @@ namespace ngpvanapi.Models
     public class CanvassResponseView
     {
         public int VanId;
-        public int InputTypeId;
-        public int ResultCodeId;
-        public int ContactTypeId;
         public List<SelectListItem> InputTypes;
+        public List<SelectListItem> ActivistCodes;
+        public SurveyQuestionList SurveyQuestions;
+    }
+
+    public class ScriptResponse
+    {
+        public ActivistCodeResponse ActivistCode;
+        public SurveyQuestionResponse SurveyResponse;
     }
 }

@@ -17,9 +17,9 @@ namespace ngpvanapi.Controllers
 
         [HttpPost]
         public ActionResult FindOrCreate(string firstName, string lastName, string emailAddress, string phoneNumber,
-            string dateOfBirth, string addressLine1, string city, string stateOrProvince, string zip5)
+            string addressLine1, string city, string stateOrProvince, string zip5)
         {
-            var toFindOrCreate = BuildPeople(firstName, lastName, emailAddress, phoneNumber, dateOfBirth, addressLine1,
+            var toFindOrCreate = BuildPeople(firstName, lastName, emailAddress, phoneNumber, addressLine1,
                 city, stateOrProvince, zip5);
             var toFindOrCreateSerialized = JsonConvert.SerializeObject(toFindOrCreate);
             var result = Helper.PostWithRedirect(string.Format("{0}/{1}", Action, "findOrCreate"),
@@ -44,18 +44,13 @@ namespace ngpvanapi.Controllers
         }
 
         private People BuildPeople(string firstName, string lastName, string emailAddress, string phoneNumber,
-            string dateOfBirth, string addressLine1, string city, string stateOrProvince, string zip5)
+            string addressLine1, string city, string stateOrProvince, string zip5)
         {
             var peep = new People
             {
                 FirstName = firstName,
                 LastName = lastName
             };
-
-            if (!string.IsNullOrEmpty(dateOfBirth))
-            {
-                peep.DateOfBirth = dateOfBirth;
-            }
 
             if (!string.IsNullOrEmpty(emailAddress))
             {
@@ -106,11 +101,12 @@ namespace ngpvanapi.Controllers
             var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
             return View("Error", errors);
         }
-        
+
         [HttpPost]
-        public ActionResult PostCanvassResponse(int vanId, int contactTypeId, int inputTypeId, int resultCodeId)
+        public ActionResult PostCanvassResponse(int vanId, int contactTypeId, int inputTypeId, int resultCodeId,
+            int activistCodeId, int surveyQuestionId, int surveyResponseId)
         {
-           var canvassResponse = new CanvassResponse
+            var canvassResponse = new CanvassResponse
             {
                 Context =
                     new CanvassContext
@@ -119,7 +115,22 @@ namespace ngpvanapi.Controllers
                         InputTypeId = inputTypeId,
                         DateCanvassedUtc = DateTime.UtcNow
                     },
-                ResultCodeId = resultCodeId
+                ResultCodeId = resultCodeId,
+                Responses = new ScriptResponse
+                {
+                    ActivistCode =
+                        new ActivistCodeResponse
+                        {
+                            ActivistCodeId = activistCodeId,
+                            Action = "Apply"
+                        },
+                    SurveyResponse =
+                        new SurveyQuestionResponse
+                        {
+                            SurveyQuestionId = surveyQuestionId,
+                            SurveyResponseId = surveyResponseId
+                        }
+                }
             };
 
             var canvassResponseSerialized = JsonConvert.SerializeObject(canvassResponse);

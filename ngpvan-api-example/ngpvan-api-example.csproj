@@ -135,6 +135,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ActivistCode.cs" />
     <Compile Include="Models\Address.cs" />
     <Compile Include="Models\CanvassResponse.cs" />
     <Compile Include="Models\Code.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\Shift.cs" />
     <Compile Include="Models\Signup.cs" />
+    <Compile Include="Models\SurveyQuestion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

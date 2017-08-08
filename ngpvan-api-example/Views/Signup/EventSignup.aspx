@@ -17,17 +17,20 @@
             <legend>RSVP For An Event</legend>
     
             <p>
-                <%= Html.Label("VAN Id", new { @class="editor-label"}) %> <%= Html.TextBox("vanId", Model.VanId, new {@class = "editor-field", @readonly = "readonly"}) %> <br/>  
-
+                <%= Html.Label("VANID", new { @class="editor-label-subheader"}) %><br/>
+                <%= Html.TextBox("vanId", Model.VanId, new {@class = "editor-field", @readonly = "readonly"}) %><br/>  
+            </p>
+            
+            <p>
                 <%= Html.Label("Event", new { @class="editor-label"}) %> <%= Html.DropDownList("eventId", Model.Events, new {@class = "editor-field"}) %> <br/>
-                
-                <%= Html.Label("Location", new { @class="editor-label"}) %> <%= Html.DropDownList("locationId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
                 
                 <%= Html.Label("Shift", new { @class="editor-label"}) %> <%= Html.DropDownList("eventShiftId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
                 
                 <%= Html.Label("Role", new { @class="editor-label"}) %> <%= Html.DropDownList("roleId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
                 
-                <%= Html.Label("Status", new { @class="editor-label"}) %> <%= Html.DropDownList("statusId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>      
+                <%= Html.Label("Status", new { @class="editor-label"}) %> <%= Html.DropDownList("statusId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
+                
+                <%= Html.Label("Location", new { @class="editor-label"}) %> <%= Html.DropDownList("locationId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>      
             </p>
             
             <input type="submit" value="RSVP" />

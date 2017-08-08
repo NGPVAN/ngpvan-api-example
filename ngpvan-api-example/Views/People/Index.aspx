@@ -13,8 +13,6 @@
             <%= Html.Label("First name", new { @class="editor-label"}) %> <%= Html.TextBox("firstName", "", new { @class="editor-field"}) %><br/>
             
             <%= Html.Label("Last name", new { @class="editor-label"}) %> <%= Html.TextBox("lastName", "", new { @class="editor-field"}) %><br/>
-            
-            <%= Html.Label("Date of birth", new { @class="editor-label"}) %> <%= Html.TextBox("dateOfBirth", "", new { @class="editor-field"}) %><br/>
         
             <%= Html.Label("Email address", new { @class="editor-label"}) %> <%= Html.TextBox("emailAddress", "", new { @class="editor-field"}) %><br/>
             
@@ -29,7 +27,7 @@
             <%= Html.Label("ZIP 5", new { @class="editor-label"}) %> <%= Html.TextBox("zip5", "", new { @class="editor-field"}) %>
         </p>
 
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Sign up" />
         <% Html.EndForm(); %>
     </fieldset>
     <p>
