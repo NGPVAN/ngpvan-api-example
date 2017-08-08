@@ -126,19 +126,31 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CanvassResponsesController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\Helper.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
+    <Compile Include="Controllers\SignupController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Address.cs" />
+    <Compile Include="Models\CanvassResponse.cs" />
+    <Compile Include="Models\Code.cs" />
+    <Compile Include="Models\ContactType.cs" />
     <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Home.cs" />
+    <Compile Include="Models\InputType.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\People.cs" />
     <Compile Include="Models\Phone.cs" />
+    <Compile Include="Models\ResultCode.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Shift.cs" />
+    <Compile Include="Models\Signup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -219,7 +231,11 @@
     <Content Include="Views\Home\Index.aspx" />
     <Content Include="Views\People\Detail.aspx" />
     <Content Include="Views\People\Index.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Views\CanvassResponses\CanvassResponse.aspx" />
+    <Content Include="Views\Signup\EventSignup.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

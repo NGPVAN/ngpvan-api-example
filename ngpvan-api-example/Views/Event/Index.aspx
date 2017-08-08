@@ -1,13 +1,14 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<System.Collections.Generic.List<ngpvanapi.Models.Event>>" %>
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<ngpvanapi.Models.EventList>" %>
 <!DOCTYPE html>
 <html>
 <head runat="server">
-    <title>Index</title>
+    <title>List of Events</title>
     <link href="~/Content/Site.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
     <fieldset>
         <legend>List of Events</legend> 
+
         <table>
             <tr>
                 <th><%= Html.Label("Event Id", new { @class="editor-label"}) %></th>
@@ -16,7 +17,7 @@
                 <th><%= Html.Label("Start date", new { @class="editor-label"}) %></th>
                 <th><%= Html.Label("End date", new { @class="editor-label"}) %></th>
             </tr> 
-        <% foreach (var item in Model) { %>
+        <% foreach (var item in Model.Items) { %>
             <tr>
                 <td>
                     <%: Html.ActionLink(item.EventId.ToString(), "Detail", new { eventId=item.EventId }, new { @class="editor-field"}) %>
@@ -36,6 +37,14 @@
             </tr>
         <% } %>
         </table>
+        
+        <p>
+            <% if (Model.NextPageLink != null)
+               { %>
+            <%: Html.ActionLink("Next", "Index", new { top = Model.Top, skip = Model.Skip  }) %> | 
+            <% } %>
+            <%= Html.Label("Total records:", new { @class="editor-label"}) %>  <%= Html.Label("count", Model.Count.ToString(), new { @class="editor-field"}) %>
+        </p>
     </fieldset>
     <p>
         <%: Html.ActionLink("Home", "Index", "Home") %>

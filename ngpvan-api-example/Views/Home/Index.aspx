@@ -7,13 +7,11 @@
 </head>
 <body>
     <fieldset>
-        <legend>NGP VAN API</legend>
+        <legend>Echoes</legend>
         <p>
-            <strong>Echoes</strong><br/>
+            <%= Html.Label("Message:", new {@class = "editor-label"}) %> <%= Html.Label(Model.Message, new {@class = "editor-label"}) %><br/>
             
-            <%= Html.Label("Message:", new { @class="editor-label"}) %> <%= Html.Label(Model.Message, new { @class="editor-label"}) %><br/>
-            
-            <%= Html.Label("Date sent:", new { @class="editor-label"}) %> <%= Html.Label(Model.DateSentUtc.ToLocalTime().ToString(), new { @class="editor-label"}) %>
+            <%= Html.Label("Date sent:", new {@class = "editor-label"}) %> <%= Html.Label(Model.DateSentUtc.ToLocalTime().ToString(), new {@class = "editor-label"}) %>
         </p> 
     </fieldset>
     <p>

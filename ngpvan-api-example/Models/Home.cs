@@ -5,6 +5,7 @@ namespace ngpvanapi.Models
 {
     public class Home
     {
+        [JsonProperty("message")]
         public string Message;
 
         [JsonProperty("dateSent")]

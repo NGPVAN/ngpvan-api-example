@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
+﻿<%@ Page Language="C#" Inherits="System.Web.Mvc.ViewPage<ngpvanapi.Models.Errors>" %>
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -8,7 +8,13 @@
 <body>
     <fieldset>
         <legend>Error</legend>
-        <p>An error occurred while processing your request.</p>
+        <p>
+            <ul>
+            <% foreach (var item in Model.Items) { %>
+                <li><%= Html.Label(item.Text, new {@class = "editor-label"}) %> [<%= Html.Label(item.Code, new {@class = "editor-label"}) %>]</li>
+            <% } %>
+            </ul>
+        </p>
     </fieldset>
 </body>
 </html>

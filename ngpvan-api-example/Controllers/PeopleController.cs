@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Mvc;
 using ngpvanapi.Models;
 using Newtonsoft.Json;
@@ -7,6 +8,8 @@ namespace ngpvanapi.Controllers
 {
     public class PeopleController : Controller
     {
+        private const string Action = "people";
+
         public ActionResult Index()
         {
             return View();
@@ -14,44 +17,30 @@ namespace ngpvanapi.Controllers
 
         [HttpPost]
         public ActionResult FindOrCreate(string firstName, string lastName, string emailAddress, string phoneNumber,
-            string dateOfBirth, string addressLine1, string city, string stateOrProvince, string zip5,
-            bool expandAddresses, bool expandPhones, bool expandEmails)
+            string dateOfBirth, string addressLine1, string city, string stateOrProvince, string zip5)
         {
             var toFindOrCreate = BuildPeople(firstName, lastName, emailAddress, phoneNumber, dateOfBirth, addressLine1,
                 city, stateOrProvince, zip5);
             var toFindOrCreateSerialized = JsonConvert.SerializeObject(toFindOrCreate);
-            var result = Helper.PostWithRedirect("people/findOrCreate", toFindOrCreateSerialized);
+            var result = Helper.PostWithRedirect(string.Format("{0}/{1}", Action, "findOrCreate"),
+                toFindOrCreateSerialized);
 
             if ((result.Code() == HttpStatusCode.Created) | (result.Code() == HttpStatusCode.Found))
             {
                 var matchResponse = JsonConvert.DeserializeObject<Match>(result.Body());
                 var vanId = matchResponse.VanId;
-                return RedirectToAction("Detail",
-                    new
-                    {
-                        id = vanId,
-                        expandAddresses,
-                        expandPhones,
-                        expandEmails
-                    });
+                return RedirectToAction("Detail", new {vanId});
             }
 
             if (result.Code() == HttpStatusCode.OK)
             {
                 var peopleResponse = JsonConvert.DeserializeObject<People>(result.Body());
                 var vanId = peopleResponse.VanId;
-                return RedirectToAction("Detail",
-                    new
-                    {
-                        id = vanId,
-                        expandAddresses,
-                        expandPhones,
-                        expandEmails
-                    });
+                return RedirectToAction("Detail", new {vanId});
             }
 
-            //todo: Handle errors
-            return View("Error");
+            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
+            return View("Error", errors);
         }
 
         private People BuildPeople(string firstName, string lastName, string emailAddress, string phoneNumber,
@@ -105,37 +94,44 @@ namespace ngpvanapi.Controllers
             return peep;
         }
 
-        public ActionResult Detail(int id, bool expandAddresses, bool expandPhones, bool expandEmails)
+        public ActionResult Detail(int vanId)
         {
-            var ext = "";
-            if (expandAddresses)
+            var result = Helper.Get(string.Format("{0}/{1}{2}", Action, vanId, "?$expand=addresses,phones,emails"));
+            if (result.Code() == HttpStatusCode.OK)
             {
-                ext = "addresses";
-            }
-            if (expandPhones)
-            {
-                if (!string.IsNullOrEmpty(ext))
-                {
-                    ext = ext + ",";
-                }
-                ext = ext + "phones";
-            }
-            if (expandEmails)
-            {
-                if (!string.IsNullOrEmpty(ext))
-                {
-                    ext = ext + ",";
-                }
-                ext = ext + "emails";
-            }
-            if (!string.IsNullOrEmpty(ext))
-            {
-                ext = "?$expand=" + ext;
+                var peopleResponse = JsonConvert.DeserializeObject<People>(result.Body());
+                return View("Detail", peopleResponse);
             }
 
-            var people = Helper.Get("people/" + id + ext);
-            var peopleResponse = JsonConvert.DeserializeObject<People>(people.Body());
-            return View("Detail", peopleResponse);
+            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
+            return View("Error", errors);
+        }
+        
+        [HttpPost]
+        public ActionResult PostCanvassResponse(int vanId, int contactTypeId, int inputTypeId, int resultCodeId)
+        {
+           var canvassResponse = new CanvassResponse
+            {
+                Context =
+                    new CanvassContext
+                    {
+                        ContactTypeId = contactTypeId,
+                        InputTypeId = inputTypeId,
+                        DateCanvassedUtc = DateTime.UtcNow
+                    },
+                ResultCodeId = resultCodeId
+            };
+
+            var canvassResponseSerialized = JsonConvert.SerializeObject(canvassResponse);
+            var result = Helper.Post(string.Format("{0}/{1}/{2}", Action, vanId, "/canvassResponses"),
+                canvassResponseSerialized);
+            if (result.Code() == HttpStatusCode.NoContent)
+            {
+                return RedirectToAction("Detail", new {vanId});
+            }
+
+            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
+            return View("Error", errors);
         }
     }
 }
