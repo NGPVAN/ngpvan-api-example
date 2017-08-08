@@ -14,6 +14,11 @@
 				"method": "POST",
 				"header": [
 					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
 						"key": "Authorization",
 						"value": "Basic Y29kaW5nQXNBY3RpdmlzbTpGMUJDMTZFMy1BQTI3LTQ1QzItOUUyQy1BQzA0NDQ0QzFFNjd8MQ==",
 						"description": ""
