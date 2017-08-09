@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using ngpvanapi.Models;
 using Newtonsoft.Json;
@@ -12,9 +12,50 @@ namespace ngpvanapi.Controllers
     {
         private const string Action = "signups";
 
-        public ActionResult Index()
+        public ActionResult Index(int? vanId, int? eventId, int? top, int? skip)
         {
-            return View();
+            var url = Action;
+            var ext = string.Empty;
+            if (vanId.HasValue && vanId.Value > 0)
+            {
+                ext = "?vanId=" + vanId.Value;
+            }
+            if (eventId.HasValue && eventId.Value > 0)
+            {
+                ext = "?eventId=" + eventId.Value;
+            }
+            if (top.HasValue && top.Value > 0)
+            {
+                ext = ext + "&$top=" + top.Value;
+            }
+            if (skip.HasValue && skip.Value > 0)
+            {
+                ext = ext + "&$skip=" + skip.Value;
+            }
+            if (!string.IsNullOrEmpty(ext))
+            {
+                url = Action + ext;
+            }
+
+            var result = Helper.Get(url);
+            if (result.Code() == HttpStatusCode.OK)
+            {
+                var list = JsonConvert.DeserializeObject<SignupList>(result.Body());
+                list.VanId = vanId;
+                list.EventId = eventId;
+
+                if (string.IsNullOrEmpty(list.NextPageLink))
+                    return View(list);
+
+                var myUri = new Uri(list.NextPageLink);
+                var paging = HttpUtility.ParseQueryString(myUri.Query);
+                list.Skip = int.Parse(paging["$skip"]);
+                list.Top = int.Parse(paging["$top"]);
+                return View(list);
+            }
+
+            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
+            return View("Error", errors);
         }
 
         [HttpGet]

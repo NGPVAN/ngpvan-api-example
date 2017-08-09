@@ -3,6 +3,30 @@ using Newtonsoft.Json;
 
 namespace ngpvanapi.Models
 {
+    public class SignupList
+    {
+        [JsonProperty("items")]
+        public List<Signup> Items;
+
+        [JsonProperty("count")]
+        public int Count;
+
+        [JsonProperty("nextPageLink")]
+        public string NextPageLink;
+
+        [JsonProperty("top")]
+        public int? Top;
+
+        [JsonProperty("skip")]
+        public int? Skip;
+
+        [JsonProperty("vanId")]
+        public int? VanId;
+
+        [JsonProperty("eventId")]
+        public int? EventId;
+    }
+
     public class Signup
     {
         [JsonProperty("person")]

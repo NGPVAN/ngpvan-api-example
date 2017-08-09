@@ -62,7 +62,8 @@
             <%: Html.ActionLink("RSVP to a simple event", "EventSignup", "Signup", new { vanId=Model.VanId, eventId=4246, statusId=1 }, new { @class="editor-label"} ) %> |
             <%: Html.ActionLink("RSVP to an event with options", "EventSignup", "Signup", new { vanId=Model.VanId, eventId=4306 }, new { @class="editor-label"} ) %> |
             <%: Html.ActionLink("Apply activist codes", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showSurveyQuestions=false }, new { @class="editor-label"}) %> |
-            <%: Html.ActionLink("Answer survey questions", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showActivistCodes=false }, new { @class="editor-label"}) %>
+            <%: Html.ActionLink("Answer survey questions", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showActivistCodes=false }, new { @class="editor-label"}) %> |
+            <%: Html.ActionLink("List of event signups", "Index", "Signup", new { vanId=Model.VanId }, new { @class="editor-label"}) %>
         </p>
     </fieldset>
     <p>

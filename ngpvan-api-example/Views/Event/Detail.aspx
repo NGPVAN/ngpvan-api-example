@@ -65,6 +65,8 @@
                 <%= Html.TextArea("locationDisplayName", location.DisplayName, new { @class="editor-field", @readonly = "readonly"}) %> <br/>
             <% } %>
             <% } %>
+            
+            <%: Html.ActionLink("List of Event Signups", "Index", "Signup", new { eventId = Model.EventId }, new { @class="editor-label"}) %>
         </p>
     </fieldset>
     <p>
