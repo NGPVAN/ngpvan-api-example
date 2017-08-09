@@ -105,7 +105,7 @@ namespace ngpvanapi.Controllers
 
         [HttpPost]
         public ActionResult PostCanvassResponse(int vanId, int contactTypeId, int inputTypeId, int? resultCodeId,
-            int activistCodeId, int surveyQuestionId, int surveyResponseId)
+            IEnumerable<int> activistCodeId, int surveyQuestionId, int surveyResponseId)
         {
             var canvassResponse = new CanvassResponse
             {
@@ -120,11 +120,19 @@ namespace ngpvanapi.Controllers
             };
 
             var responses = new List<ScriptResponse>();
-            responses.Add(new ActivistCodeResponse
+
+            if (activistCodeId != null)
             {
-                ActivistCodeId = activistCodeId,
-                Action = "Apply"
-            });
+                foreach (var ac in activistCodeId)
+                {
+                    responses.Add(new ActivistCodeResponse
+                    {
+                        ActivistCodeId = ac,
+                        Action = "Apply"
+                    });
+                }
+            }
+
 
             responses.Add(new SurveyQuestionResponse
             {

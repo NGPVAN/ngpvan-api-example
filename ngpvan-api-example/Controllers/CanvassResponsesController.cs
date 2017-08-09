@@ -45,7 +45,6 @@ namespace ngpvanapi.Controllers
             var ac = JsonConvert.DeserializeObject<ActivistCodeList>(activistCodes.Body());
             var activistCodesList =
                 ac.Items.Select(e => new SelectListItem {Value = e.ActivistCodeId.ToString(), Text = e.Name}).ToList();
-            activistCodesList.Insert(0, defaultSelectListItem);
             view.ActivistCodes = activistCodesList;
 
             var surveyQuestions = Helper.Get(string.Format("{0}", "surveyQuestions"));

@@ -26,8 +26,16 @@
 
             
             <p>
-                <%= Html.Label("Activist code", new { @class="editor-label-subheader"}) %><br/>
-                <%= Html.DropDownList("activistCodeId", Model.ActivistCodes, new {@class = "editor-field"}) %> <br/>
+                <% if (Model.ActivistCodes != null && Model.ActivistCodes.Count > 0)
+                   {
+                        %><%= Html.Label("How you'd like to help", new { @class="editor-label-subheader"}) %><br/><%
+                       foreach (var ac in Model.ActivistCodes)
+                       {
+                           %> <input type="checkbox" name="activistCodeId" value="<%= ac.Value %>"/>
+                            <%= Html.Label(ac.Text) %><br/><%
+                       }
+                   }
+                %>
             </p>
 
             <p>
