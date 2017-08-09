@@ -59,7 +59,8 @@
         </p>
         <p>
             <%: Html.ActionLink("RSVP For An Event", "EventSignup", "Signup", new { vanId=Model.VanId }, new { @class="editor-field"} ) %> |
-            <%: Html.ActionLink("Post Canvass Response", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId }, new { @class="editor-field"}) %>
+            <%: Html.ActionLink("Apply activist codes", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showSurveyQuestions = false }, new { @class="editor-field"}) %> |
+            <%: Html.ActionLink("Answer survey questions", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showActivistCodes = false }, new { @class="editor-field"}) %>
         </p>
     </fieldset>
     <p>

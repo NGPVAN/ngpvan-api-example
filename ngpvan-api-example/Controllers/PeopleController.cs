@@ -133,12 +133,14 @@ namespace ngpvanapi.Controllers
                 }
             }
 
-
-            responses.Add(new SurveyQuestionResponse
+            if (surveyQuestionId > 0 && surveyResponseId > 0)
             {
-                SurveyQuestionId = surveyQuestionId,
-                SurveyResponseId = surveyResponseId
-            });
+                responses.Add(new SurveyQuestionResponse
+                {
+                    SurveyQuestionId = surveyQuestionId,
+                    SurveyResponseId = surveyResponseId
+                });
+            }
 
             canvassResponse.Responses = responses;
 

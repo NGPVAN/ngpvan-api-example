@@ -16,7 +16,9 @@ namespace ngpvanapi.Controllers
             return View();
         }
 
-        public ActionResult CanvassResponse(int vanId)
+        public ActionResult CanvassResponse(int vanId,
+            bool showActivistCodes = true, 
+            bool showSurveyQuestions = true)
         {
             var view = new CanvassResponseView {VanId = vanId};
             
@@ -35,27 +37,43 @@ namespace ngpvanapi.Controllers
             inputTypesList.Insert(0, defaultSelectListItem);
             view.InputTypes = inputTypesList;
 
-            var activistCodes = Helper.Get(string.Format("{0}", "activistCodes"));
-            if (activistCodes.Code() != HttpStatusCode.OK)
+            if (showActivistCodes)
             {
-                var errors = JsonConvert.DeserializeObject<Errors>(activistCodes.Body());
-                return View("Error", errors);
+                var activistCodes = Helper.Get(string.Format("{0}", "activistCodes"));
+                if (activistCodes.Code() != HttpStatusCode.OK)
+                {
+                    var errors = JsonConvert.DeserializeObject<Errors>(activistCodes.Body());
+                    return View("Error", errors);
+                }
+
+                var ac = JsonConvert.DeserializeObject<ActivistCodeList>(activistCodes.Body());
+                var activistCodesList =
+                    ac.Items.Select(e => new SelectListItem {Value = e.ActivistCodeId.ToString(), Text = e.Name})
+                        .ToList();
+                view.ActivistCodes = activistCodesList;
+            }
+            else
+            {
+                view.ActivistCodes = new List<SelectListItem>();
             }
 
-            var ac = JsonConvert.DeserializeObject<ActivistCodeList>(activistCodes.Body());
-            var activistCodesList =
-                ac.Items.Select(e => new SelectListItem {Value = e.ActivistCodeId.ToString(), Text = e.Name}).ToList();
-            view.ActivistCodes = activistCodesList;
-
-            var surveyQuestions = Helper.Get(string.Format("{0}", "surveyQuestions"));
-            if (surveyQuestions.Code() != HttpStatusCode.OK)
+            if (showSurveyQuestions)
             {
-                var errors = JsonConvert.DeserializeObject<Errors>(surveyQuestions.Body());
-                return View("Error", errors);
-            }
 
-            var surveyQuestionsList = JsonConvert.DeserializeObject<SurveyQuestionList>(surveyQuestions.Body());
-            view.SurveyQuestions = surveyQuestionsList;
+                var surveyQuestions = Helper.Get(string.Format("{0}", "surveyQuestions"));
+                if (surveyQuestions.Code() != HttpStatusCode.OK)
+                {
+                    var errors = JsonConvert.DeserializeObject<Errors>(surveyQuestions.Body());
+                    return View("Error", errors);
+                }
+
+                var surveyQuestionsList = JsonConvert.DeserializeObject<SurveyQuestionList>(surveyQuestions.Body());
+                view.SurveyQuestions = surveyQuestionsList;
+            }
+            else
+            {
+                view.SurveyQuestions = new SurveyQuestionList();
+            }
 
             return View(view);
         }

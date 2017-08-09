@@ -39,16 +39,21 @@
             </p>
 
             <p>
-                <% if (Model.SurveyQuestions != null && Model.SurveyQuestions.Items.Count > 0)
+                <% if (Model.SurveyQuestions != null && Model.SurveyQuestions.Items != null && Model.SurveyQuestions.Items.Count > 0)
                    { %>
-                    <%= Html.Label("Survey question", new { @class="editor-label-subheader"}) %><br/>
-                    <%    var surveyQuestion = Model.SurveyQuestions.Items[0];
+                    <%= Html.Label("Survey question", new {@class = "editor-label-subheader"}) %><br/>
+                    <% var surveyQuestion = Model.SurveyQuestions.Items[0];
                     %>
                         <%= Html.Hidden("surveyQuestionId", surveyQuestion.SurveyQuestionId, new {@class = "editor-field", @readonly = "readonly"}) %>
-                        <%= Html.Label(surveyQuestion.ScriptQuestion, new { @class="editor-label"}) %><br/>
-                        <%= Html.DropDownList("surveyResponseId", new List<SelectListItem>(surveyQuestion.SurveyResponses.Select(x => new SelectListItem() {Value = x.SurveyResponseId.ToString(), Text = x.Name} )) ) %>
+                        <%= Html.Label(surveyQuestion.ScriptQuestion, new {@class = "editor-label"}) %><br/>
+                        <%= Html.DropDownList("surveyResponseId", new List<SelectListItem>(surveyQuestion.SurveyResponses.Select(x => new SelectListItem() {Value = x.SurveyResponseId.ToString(), Text = x.Name}))) %>
                     <%
-                    } %>
+                   }
+                   else
+                   {
+                    %><input type="hidden" name="surveyQuestionId" value="0"/>
+                      <input type="hidden" name="surveyResponseId" value="0"/><%
+                   }%>
             </p>
             
             <input type="submit" value="Post" />
