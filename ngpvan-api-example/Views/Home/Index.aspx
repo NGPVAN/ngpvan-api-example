@@ -6,6 +6,10 @@
     <link href="~/Content/Site.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
+    <div id="header">
+        <img src="../../Content/themes/images/pets-for-office.jpg"/>
+    </div>
+
     <fieldset>
         <legend>Echoes</legend>
         <p>

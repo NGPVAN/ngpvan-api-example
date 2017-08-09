@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 using Newtonsoft.Json;
 
 namespace ngpvanapi.Models
@@ -32,8 +31,7 @@ namespace ngpvanapi.Models
     public class CanvassResponseView
     {
         public int VanId;
-        public List<SelectListItem> InputTypes;
-        public List<SelectListItem> ActivistCodes;
+        public ActivistCodeList ActivistCodes;
         public SurveyQuestionList SurveyQuestions;
     }
 

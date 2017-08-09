@@ -6,12 +6,16 @@
     <link href="~/Content/Site.css" type="text/css" rel="stylesheet"/>
 </head>
 <body>
+    <div id="header">
+        <img src="../../Content/themes/images/pets-for-office.jpg"/>
+    </div>
+
     <fieldset>
         <legend>List of Events</legend> 
 
         <table>
             <tr>
-                <th><%= Html.Label("Event Id", new { @class="editor-label"}) %></th>
+                <th><%= Html.Label("Event ID", new { @class="editor-label"}) %></th>
                 <th><%= Html.Label("Name", new { @class="editor-label"}) %></th>
                 <th><%= Html.Label("Description", new { @class="editor-label"}) %></th>
                 <th><%= Html.Label("Start date", new { @class="editor-label"}) %></th>

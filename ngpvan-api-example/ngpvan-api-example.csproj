@@ -210,6 +210,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\themes\images\pets-for-office.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
@@ -235,7 +236,6 @@
     <Content Include="Views\People\Index.aspx" />
     <Content Include="Views\CanvassResponses\CanvassResponse.aspx" />
     <Content Include="Views\Signup\EventSignup.aspx" />
-    <Content Include="Views\Signup\SimpleSignup.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

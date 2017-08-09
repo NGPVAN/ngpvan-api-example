@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
 using Newtonsoft.Json;
 
 namespace ngpvanapi.Models
@@ -28,7 +27,10 @@ namespace ngpvanapi.Models
     public class SignupView
     {
         public int VanId;
-        public List<SelectListItem> Events;
+        public int EventId;
+        public int? StatusId;
+        public Event Event;
+        public List<Status> Statuses;
     }
 
     public class Status

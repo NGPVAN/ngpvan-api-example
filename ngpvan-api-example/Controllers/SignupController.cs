@@ -18,29 +18,34 @@ namespace ngpvanapi.Controllers
         }
 
         [HttpGet]
-        public ActionResult EventSignup(int vanId)
+        public ActionResult EventSignup(int vanId, int eventId, int? statusId)
         {
-            var view = new SignupView {VanId = vanId};
-            var result = Helper.Get("/events?$top=50");
-            if (result.Code() == HttpStatusCode.OK)
+            var view = new SignupView {VanId = vanId, EventId = eventId, StatusId = statusId};
+
+            var eventResult = Helper.Get("events/" + eventId + "?$expand=shifts,roles,locations");
+            if (eventResult.Code() != HttpStatusCode.OK)
             {
-                var list = JsonConvert.DeserializeObject<EventList>(result.Body());
-                var eventsList = new List<SelectListItem>();
-                foreach (var item in list.Items)
-                {
-                    if (item.IsActive)
-                    {
-                        eventsList.Add(new SelectListItem {Value = item.EventId.ToString(), Text = item.Name});
-                    }
-                }
-                var defaultEvent = new SelectListItem {Value = "0", Text = string.Empty, Selected = true};
-                eventsList.Insert(0, defaultEvent);
-                view.Events = eventsList;
-                return View(view);
+                var errors = JsonConvert.DeserializeObject<Errors>(eventResult.Body());
+                return View("Error", errors);
             }
 
-            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
-            return View("Error", errors);
+            var eventDetail = JsonConvert.DeserializeObject<Event>(eventResult.Body());
+            view.Event = eventDetail;
+
+            if (statusId == null)
+            {
+                var statusResult = Helper.Get(string.Format("{0}/statuses?eventId={1}", Action, eventId));
+                if (statusResult.Code() != HttpStatusCode.OK)
+                {
+                    var errors = JsonConvert.DeserializeObject<Errors>(statusResult.Body());
+                    return View("Error", errors);
+                }
+
+                var statusesDetail = JsonConvert.DeserializeObject<List<Status>>(statusResult.Body());
+                view.Statuses = statusesDetail;
+            }
+
+            return View(view);
         }
 
         [HttpPost]
@@ -61,54 +66,6 @@ namespace ngpvanapi.Controllers
             if (result.Code() == HttpStatusCode.Created)
             {
                 return RedirectToAction("Detail", "People", new {vanId});
-            }
-
-            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
-            return View("Error", errors);
-        }
-
-        public ActionResult GetStatusListByEventId(int eventId)
-        {
-            if (eventId <= 0)
-                return null;
-
-            var result = Helper.Get(string.Format("{0}/statuses?eventId={1}", Action, eventId));
-            if (result.Code() == HttpStatusCode.OK)
-            {
-                var statusList = JsonConvert.DeserializeObject<List<Status>>(result.Body());
-                return Json(statusList);
-            }
-
-            return null;
-        }
-
-        [HttpGet]
-        public ActionResult SimpleSignup(int vanId, int eventId)
-        {
-            var view = new SignupView { VanId = vanId };
-            var result = Helper.Get("/events/" + eventId);
-            
-            if (result.Code() == HttpStatusCode.OK)
-            {
-                var ev = JsonConvert.DeserializeObject<EventList>(result.Body());
-                var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());
-                return View(eventDetail);
-            }
-
-            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
-            return View("Error", errors);
-        }
-
-        [HttpPost]
-        public ActionResult SimpleSignup(int vanId, int eventId, int statusId)
-        {
-            var view = new SignupView { VanId = vanId };
-            var result = Helper.Get("/events/" + eventId);
-
-            if (result.Code() == HttpStatusCode.OK)
-            {
-                var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());
-                return View(eventDetail);
             }
 
             var errors = JsonConvert.DeserializeObject<Errors>(result.Body());

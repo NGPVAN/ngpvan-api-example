@@ -58,20 +58,5 @@ namespace ngpvanapi.Controllers
             var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
             return View("Error", errors);
         }
-
-        public ActionResult GetByEventId(int eventId)
-        {
-            if (eventId == 0)
-                return null;
-
-            var result = Helper.Get(string.Format("{0}/{1}?$expand=shifts,roles,locations", Action, eventId));
-            if (result.Code() == HttpStatusCode.OK)
-            {
-                var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());
-                return Json(eventDetail);
-            }
-
-            return null;
-        }
     }
 }
