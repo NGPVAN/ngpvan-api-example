@@ -235,6 +235,7 @@
     <Content Include="Views\People\Index.aspx" />
     <Content Include="Views\CanvassResponses\CanvassResponse.aspx" />
     <Content Include="Views\Signup\EventSignup.aspx" />
+    <Content Include="Views\Signup\SimpleSignup.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

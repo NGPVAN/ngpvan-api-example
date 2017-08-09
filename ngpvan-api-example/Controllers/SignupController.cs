@@ -81,5 +81,38 @@ namespace ngpvanapi.Controllers
 
             return null;
         }
+
+        [HttpGet]
+        public ActionResult SimpleSignup(int vanId, int eventId)
+        {
+            var view = new SignupView { VanId = vanId };
+            var result = Helper.Get("/events/" + eventId);
+            
+            if (result.Code() == HttpStatusCode.OK)
+            {
+                var ev = JsonConvert.DeserializeObject<EventList>(result.Body());
+                var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());
+                return View(eventDetail);
+            }
+
+            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
+            return View("Error", errors);
+        }
+
+        [HttpPost]
+        public ActionResult SimpleSignup(int vanId, int eventId, int statusId)
+        {
+            var view = new SignupView { VanId = vanId };
+            var result = Helper.Get("/events/" + eventId);
+
+            if (result.Code() == HttpStatusCode.OK)
+            {
+                var eventDetail = JsonConvert.DeserializeObject<Event>(result.Body());
+                return View(eventDetail);
+            }
+
+            var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
+            return View("Error", errors);
+        }
     }
 }

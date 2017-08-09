@@ -27,8 +27,8 @@
                 <%= Html.Label("Shift", new { @class="editor-label"}) %> <%= Html.DropDownList("eventShiftId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
                 
                 <%= Html.Label("Role", new { @class="editor-label"}) %> <%= Html.DropDownList("roleId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
-                
-                <%= Html.Label("Status", new { @class="editor-label"}) %> <%= Html.DropDownList("statusId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>
+
+                <input type="hidden" name="statusId" value="1"/>
                 
                 <%= Html.Label("Location", new { @class="editor-label"}) %> <%= Html.DropDownList("locationId", new List<SelectListItem>(), new {@class = "editor-field"}) %><br/>      
             </p>
