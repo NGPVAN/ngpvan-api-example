@@ -48,11 +48,8 @@ namespace ngpvanapi.Models
         public string Status;
     }
 
-    public class ActivistCodeResponse
+    public class ActivistCodeResponse : ScriptResponse
     {
-        [JsonProperty("type")]
-        public string Type { get; private set; }
-
         [JsonProperty("activistCodeId")]
         public int ActivistCodeId;
 

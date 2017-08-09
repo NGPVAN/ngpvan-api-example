@@ -19,14 +19,11 @@
                 <%= Html.Label("VANID", new { @class="editor-label-subheader"}) %><br/>
                 <%= Html.TextBox("vanId", Model.VanId, new {@class = "editor-field", @readonly = "readonly"}) %> <br/>  
             </p>
+
+            <input type="hidden" name="inputTypeId" value="11"/>
             
-            <p>
-                <%= Html.Label("Input type", new { @class="editor-label"}) %> <%= Html.DropDownList("inputTypeId", Model.InputTypes, new {@class = "editor-field"}) %> <br/>
-                
-                <%= Html.Label("Contact type", new { @class="editor-label"}) %> <%= Html.DropDownList("contactTypeId", new List<SelectListItem>(), new {@class = "editor-field"}) %> <br/>
-                
-                <%= Html.Label("Result code", new { @class="editor-label"}) %> <%= Html.DropDownList("resultCodeId", new List<SelectListItem>(), new {@class = "editor-field"}) %> <br/>
-            </p>
+            <input type="hidden" name="contactTypeId" value="8"/>
+
             
             <p>
                 <%= Html.Label("Activist code", new { @class="editor-label-subheader"}) %><br/>

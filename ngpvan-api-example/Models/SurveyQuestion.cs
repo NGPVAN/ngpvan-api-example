@@ -66,11 +66,8 @@ namespace ngpvanapi.Models
         public string ShortName;
     }
 
-    public class SurveyQuestionResponse
+    public class SurveyQuestionResponse : ScriptResponse
     {
-        [JsonProperty("type")]
-        public string Type { get; private set; }
-
         [JsonProperty("surveyQuestionId")]
         public int SurveyQuestionId;
 

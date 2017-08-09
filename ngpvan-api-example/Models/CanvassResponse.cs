@@ -14,7 +14,7 @@ namespace ngpvanapi.Models
         public int? ResultCodeId;
 
         [JsonProperty("responses")]
-        public ScriptResponse Responses;
+        public IEnumerable<ScriptResponse> Responses;
     }
 
     public class CanvassContext
@@ -39,7 +39,7 @@ namespace ngpvanapi.Models
 
     public class ScriptResponse
     {
-        public ActivistCodeResponse ActivistCode;
-        public SurveyQuestionResponse SurveyResponse;
+        [JsonProperty("type")]
+        public string Type { get; protected set; }
     }
 }
