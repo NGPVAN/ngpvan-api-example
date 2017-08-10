@@ -81,7 +81,7 @@
         <% if (Model.DBMode == 1)
            { %>
         <p>
-            <%: Html.ActionLink("Event details", "Detail", "Event", new {eventId = 4246}, new {@class = "editor-label"}) %> |
+            <%: Html.ActionLink("Event details", "Detail", "Event", new {eventId = 4306}, new {@class = "editor-label"}) %> |
             <%: Html.ActionLink("RSVP to a simple event", "EventSignup", "Signup", new {vanId = Model.VanId, eventId = 4246, statusId = 1}, new {@class = "editor-label"}) %> |
             <%: Html.ActionLink("RSVP to an event with options", "EventSignup", "Signup", new {vanId = Model.VanId, eventId = 4306, statusId = 1}, new {@class = "editor-label"}) %> |
             <%: Html.ActionLink("Apply activist codes", "CanvassResponse", "CanvassResponses", new {vanId = Model.VanId, showSurveyQuestions = false}, new {@class = "editor-label"}) %> |
