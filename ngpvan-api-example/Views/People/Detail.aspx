@@ -23,7 +23,7 @@
             <%= Html.TextBox("lastName", Model.LastName, new {@class = "editor-field", @readonly = "readonly"}) %>
             <%= Html.TextBox("suffix", Model.Suffix, new {@class = "editor-field", @readonly = "readonly"}) %><br/>
             
-            <% if (Model.Addresses != null) { %>
+            <% if (Model.Addresses != null && Model.Addresses.Length > 0) { %>
             <br/>
             <%= Html.Label("Address", new {@class = "editor-label-subheader"}) %><br/>
             <%
@@ -35,7 +35,7 @@
             <% }
                } %>
             
-            <% if (Model.Phones != null) {%>
+            <% if (Model.Phones != null && Model.Phones.Length > 0) {%>
             <br/>
             <%= Html.Label("Phone", new {@class = "editor-label-subheader"}) %><br/>
             <%
@@ -46,7 +46,7 @@
             <% }
                } %>
 
-            <% if (Model.Emails != null) {%>
+            <% if (Model.Emails != null && Model.Emails.Length > 0) {%>
             <br/>
             <%= Html.Label("Email Address", new {@class = "editor-label-subheader"}) %><br/>
             <%
@@ -59,6 +59,7 @@
         </p>
 
         <p>
+            <%: Html.ActionLink("Event details", "Detail", "Event", new { eventId=4246 }, new { @class="editor-label"} ) %> |
             <%: Html.ActionLink("RSVP to a simple event", "EventSignup", "Signup", new { vanId=Model.VanId, eventId=4246, statusId=1 }, new { @class="editor-label"} ) %> |
             <%: Html.ActionLink("RSVP to an event with options", "EventSignup", "Signup", new { vanId=Model.VanId, eventId=4306 }, new { @class="editor-label"} ) %> |
             <%: Html.ActionLink("Apply activist codes", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showSurveyQuestions=false }, new { @class="editor-label"}) %> |
