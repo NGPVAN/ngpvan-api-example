@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using ngpvanapi.Models;
@@ -26,7 +28,7 @@ namespace ngpvanapi.Controllers
             var result = Helper.PostWithRedirect(string.Format("{0}/{1}", Action, "findOrCreate"),
                 toFindOrCreateSerialized);
 
-            if ((result.Code() == HttpStatusCode.Created) | (result.Code() == HttpStatusCode.Found))
+            if ((result.Code() == HttpStatusCode.Created) || (result.Code() == HttpStatusCode.Found))
             {
                 var matchResponse = JsonConvert.DeserializeObject<Match>(result.Body());
                 var vanId = matchResponse.VanId;
@@ -90,17 +92,60 @@ namespace ngpvanapi.Controllers
             return peep;
         }
 
-        public ActionResult Detail(int vanId)
+        public ActionResult Detail(int vanId, int? dbMode = 1)
         {
-            var result = Helper.Get(string.Format("{0}/{1}{2}", Action, vanId, "?$expand=addresses,phones,emails"));
+            var mode = 1;
+            if (dbMode.HasValue)
+            {
+                mode = dbMode.Value;
+            }
+
+            var expand = "addresses,phones,emails";
+            if (mode == 0)
+            {
+                expand = "districts";
+            }
+
+            var result = Helper.Get(string.Format("{0}/{1}{2}", Action, vanId, "?$expand=" + expand), mode);
             if (result.Code() == HttpStatusCode.OK)
             {
                 var peopleResponse = JsonConvert.DeserializeObject<People>(result.Body());
+                peopleResponse.DBMode = mode;
+
+                if (mode == 1)
+                {
+                    var vfVanId = GetVoterFileVANID(peopleResponse);
+                    peopleResponse.VoterFileVanID = vfVanId;                    
+                }
+
                 return View("Detail", peopleResponse);
             }
 
             var errors = JsonConvert.DeserializeObject<Errors>(result.Body());
             return View("Error", errors);
+        }
+
+        private int GetVoterFileVANID(People volunteer)
+        {
+            if (volunteer.Phones == null || !volunteer.Phones.Any())
+            {
+                return 0;
+            }
+
+            var toFind = BuildPeople(volunteer.FirstName, volunteer.LastName, null,
+                volunteer.Phones[0].PhoneNumber, null, null, null, null);
+            var toFindSerialized = JsonConvert.SerializeObject(toFind);
+            var result = Helper.PostWithRedirect(string.Format("{0}/{1}", Action, "find"),
+                toFindSerialized, 0);
+
+            if ((result.Code() == HttpStatusCode.Created) || (result.Code() == HttpStatusCode.Found) ||
+                result.Code() == HttpStatusCode.OK)
+            {
+                var matchResponse = JsonConvert.DeserializeObject<Match>(result.Body());
+                var vanId = matchResponse.VanId;
+                return vanId;
+            }
+            return 0;
         }
 
         [HttpPost]

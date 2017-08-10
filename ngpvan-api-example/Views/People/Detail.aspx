@@ -57,15 +57,44 @@
             <% }
                } %>         
         </p>
-
+        
         <p>
-            <%: Html.ActionLink("Event details", "Detail", "Event", new { eventId=4246 }, new { @class="editor-label"} ) %> |
-            <%: Html.ActionLink("RSVP to a simple event", "EventSignup", "Signup", new { vanId=Model.VanId, eventId=4246, statusId=1 }, new { @class="editor-label"} ) %> |
-            <%: Html.ActionLink("RSVP to an event with options", "EventSignup", "Signup", new { vanId=Model.VanId, eventId=4306, statusId=1 }, new { @class="editor-label"} ) %> |
-            <%: Html.ActionLink("Apply activist codes", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showSurveyQuestions=false }, new { @class="editor-label"}) %> |
-            <%: Html.ActionLink("Answer survey questions", "CanvassResponse", "CanvassResponses", new { vanId=Model.VanId, showActivistCodes=false }, new { @class="editor-label"}) %> |
-            <%: Html.ActionLink("List of event signups", "Index", "Signup", new { vanId=Model.VanId }, new { @class="editor-label"}) %>
+            <% if (Model.Districts != null && Model.Districts.Length > 0)
+               { %>
+            <br/>
+            <%= Html.Label("Districts", new {@class = "editor-label-subheader"}) %><br/>
+            <%
+                foreach (var district in Model.Districts)
+                { %>
+
+                    <%= Html.Label(district.Name, new {@class = "editor-label"}) %> 
+                    <%
+                        foreach (var field in district.DistrictFieldValues)
+                        {
+                    %> <%= field.Name %> <br/><%
+                        }
+                }
+               } %>
+
         </p>
+
+        <% if (Model.DBMode == 1)
+           { %>
+        <p>
+            <%: Html.ActionLink("Event details", "Detail", "Event", new {eventId = 4246}, new {@class = "editor-label"}) %> |
+            <%: Html.ActionLink("RSVP to a simple event", "EventSignup", "Signup", new {vanId = Model.VanId, eventId = 4246, statusId = 1}, new {@class = "editor-label"}) %> |
+            <%: Html.ActionLink("RSVP to an event with options", "EventSignup", "Signup", new {vanId = Model.VanId, eventId = 4306, statusId = 1}, new {@class = "editor-label"}) %> |
+            <%: Html.ActionLink("Apply activist codes", "CanvassResponse", "CanvassResponses", new {vanId = Model.VanId, showSurveyQuestions = false}, new {@class = "editor-label"}) %> |
+            <%: Html.ActionLink("Answer survey questions", "CanvassResponse", "CanvassResponses", new {vanId = Model.VanId, showActivistCodes = false}, new {@class = "editor-label"}) %> |
+            <%: Html.ActionLink("List of event signups", "Index", "Signup", new {vanId = Model.VanId}, new {@class = "editor-label"}) %>
+            
+            <% if (Model.VoterFileVanID.HasValue && Model.VoterFileVanID.Value > 0)
+               {
+            %> | <a href="/People/Detail?vanId=<%= Model.VoterFileVanID.Value %>&dbMode=0">Your voterfile record</a><%            
+               } %>
+        </p>
+        <% } %>
+        
     </fieldset>
     <p>
         <%: Html.ActionLink("Back to Sign Up", "Index") %>

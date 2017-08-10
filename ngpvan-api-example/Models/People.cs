@@ -45,6 +45,11 @@ namespace ngpvanapi.Models
 
         [JsonProperty("phones")]
         public Phone[] Phones;
+
+        public int? VoterFileVanID;
+        public int DBMode;
+
+        public District[] Districts;
     }
 
     public class Match

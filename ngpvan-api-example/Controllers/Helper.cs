@@ -43,16 +43,14 @@ namespace ngpvanapi.Controllers
         {
             get
             {
-                var pwd = System.Configuration.ConfigurationManager.AppSettings["VANAPI_Password"];
-                var dbMode = System.Configuration.ConfigurationManager.AppSettings["VANAPI_DBMode"];
-                return string.Format("{0}|{1}", pwd, dbMode);
+                return System.Configuration.ConfigurationManager.AppSettings["VANAPI_Password"];
             }
         }
 
-        public static ReturnObject Get(string action)
+        public static ReturnObject Get(string action, int dbMode = 1)
         {
             var url = string.Format(UrlFormat, action);
-            var request = CreateRequest(url, "GET", Username, Password);
+            var request = CreateRequest(url, "GET", Username, Password, dbMode);
             return ExecuteGetRequest(request);
         }
 
@@ -63,18 +61,18 @@ namespace ngpvanapi.Controllers
             return ExecutePostRequest(request, serializedData);
         }
 
-        public static ReturnObject PostWithRedirect(string action, string serializedData)
+        public static ReturnObject PostWithRedirect(string action, string serializedData, int dbMode = 1)
         {
             var url = string.Format(UrlFormat, action);
-            var request = CreateRequest(url, "POST", Username, Password);
-            return ExecutePostRequestWithRedirect(request, serializedData);
+            var request = CreateRequest(url, "POST", Username, Password, dbMode);
+            return ExecutePostRequestWithRedirect(request, serializedData, dbMode);
         }
 
-        internal static WebRequest CreateRequest(string url, string method, string username, string password)
+        internal static WebRequest CreateRequest(string url, string method, string username, string password, int dbMode = 1)
         {
             var request = (HttpWebRequest) WebRequest.Create(url);
             request.Method = method;
-            request.Headers.Add("Authorization", GetAuthorizationHeaderValue(username, password));
+            request.Headers.Add("Authorization", GetAuthorizationHeaderValue(username, password + "|" + dbMode));
             request.ContentType = "application/json";
             return request;
         }
@@ -143,7 +141,7 @@ namespace ngpvanapi.Controllers
             }
         }
 
-        private static ReturnObject ExecutePostRequestWithRedirect(WebRequest webRequest, string serializedData)
+        private static ReturnObject ExecutePostRequestWithRedirect(WebRequest webRequest, string serializedData, int dbMode = 1)
         {
             HttpStatusCode responseCode;
             string responseBody;
@@ -173,7 +171,7 @@ namespace ngpvanapi.Controllers
                         var redirectResponse = resp.ResponseUri;
                         if (redirectResponse != webRequest.RequestUri)
                         {
-                            var redirectRequest = CreateRequest(redirectResponse.AbsoluteUri, "GET", Username, Password);
+                            var redirectRequest = CreateRequest(redirectResponse.AbsoluteUri, "GET", Username, Password, dbMode);
                             return ExecuteGetRequest(redirectRequest);
                         }
                     }
