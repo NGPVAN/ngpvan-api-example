@@ -27,6 +27,9 @@
         <p>
             <%= Html.Label("Event Detail", new {@class = "editor-label-subheader"}) %><br/>
 
+            <%= Html.Label("Event Id") %>: 
+            <%= Html.Label(Model.EventId.ToString()) %><br/>
+
             <%= Html.Label("Event Name", new {@class = "editor-label"}) %><br/>
             <%= Html.TextBox("eventName", Model.Event.Name, new {@class = "editor-field", @readonly = "readonly"}) %><%= Html.Hidden("eventId", Model.Event.EventId) %><br/>
         

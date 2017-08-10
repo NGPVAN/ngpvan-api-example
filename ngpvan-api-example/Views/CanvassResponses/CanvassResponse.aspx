@@ -28,7 +28,7 @@
 
         <p>
             <% if (Model.ActivistCodes != null && Model.ActivistCodes.Items != null && Model.ActivistCodes.Items.Count > 0) { %>
-            <%= Html.Label("How you'd like to help", new { @class="editor-label-subheader"}) %><br/>
+            <%= Html.Label("How do you identify?", new { @class="editor-label-subheader"}) %><br/>
 
             <% foreach (var ac in Model.ActivistCodes.Items)
                {  %>
@@ -40,10 +40,9 @@
 
         <p>
             <% if (Model.SurveyQuestions != null && Model.SurveyQuestions.Items != null && Model.SurveyQuestions.Items.Count > 0) { %>
-                <%= Html.Label("Survey question", new {@class = "editor-label-subheader"}) %><br/>
                 <% var surveyQuestion = Model.SurveyQuestions.Items[0]; %>
                 <%= Html.Hidden("surveyQuestionId", surveyQuestion.SurveyQuestionId) %>
-                <%= Html.Label(surveyQuestion.ScriptQuestion, new {@class = "editor-label"}) %><br/>
+                <%= Html.Label(surveyQuestion.ScriptQuestion, new {@class = "editor-label-subheader"}) %><br/>
                 <%= Html.DropDownList("surveyResponseId", new List<SelectListItem>(surveyQuestion.SurveyResponses.Select(x => new SelectListItem() {Value = x.SurveyResponseId.ToString(), Text = x.Name}))) %>
                 <%
             }
