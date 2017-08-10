@@ -11,6 +11,6 @@ All of these features are backed by the [NGP VAN API](https://developers.ngpvan.
 
 The coding framework here is [.NET MVC](https://msdn.microsoft.com/en-us/library/dd381412(v=vs.108).aspx), although it is certainly possible to build equivalent functionality in any number of other frameworks.
 
-We also provide a bash script that includes a set of cURL commands for executing API calls similar to those found in the web app, as well as a Postman collection that allows you to run the same API calls in [Postman](https://www.getpostman.com/) - though it is easy enough to use other API clients to execute these API calls.
+We also provide a [bash script](https://github.com/NGPVAN/ngpvan-api-example/blob/master/sample-calls.sh) that includes a set of cURL commands for executing API calls similar to those found in the web app, as well as a [Postman collection](https://github.com/NGPVAN/ngpvan-api-example/blob/master/apicalls.postman_collection.json) that allows you to run the same API calls in [Postman](https://www.getpostman.com/) - though it is easy enough to use other API clients to execute these API calls.
 
 The keys used in these examples and included in the source code are no longer functional. However, if you wish to experiment with our API, we encourage you to [request an API key!](http://developers.ngpvan.com/apiKey/request)
